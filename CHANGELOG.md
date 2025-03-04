@@ -11,6 +11,10 @@
 
 -->
 ## Unreleased
+- Added a new `Rules` feature that allows you to write multiple danger rules for a single run in a graphable order.
+- Added IntelliJ Plugin settings panel for displaying current information and allow custom source jar for scripts
+- Fixed how IJ Plugin searches PR urls for `danger-kotlin pr` runs.
+- IJ Plugin will now auto-hydrate the run environment for GH tokens, base, api urls
 
 # 2.0.2
 - Added Run Configuration to IntelliJ Plugin so Dangerfiles can be run directly in the IDE

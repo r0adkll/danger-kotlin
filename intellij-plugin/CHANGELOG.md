@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added settings panel for view `danger` an `danger-kotlin` installation information
+- Added setting to custom provide source `danger-kotlin.jar` for script evaluation/editing
+
+### Fixed
+
+- Fixed how pull request URLs are searched in the GH api
+
 ## [2.0.2]
 
 ### Added
