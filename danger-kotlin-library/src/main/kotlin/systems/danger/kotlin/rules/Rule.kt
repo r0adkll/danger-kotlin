@@ -3,10 +3,8 @@ package systems.danger.kotlin.rules
 import kotlinx.coroutines.CoroutineScope
 import systems.danger.kotlin.models.danger.DangerDSL
 
-class RuleContext(
-  private val danger: DangerDSL,
-  private val scope: CoroutineScope,
-): DangerDSL by danger, CoroutineScope by scope
+class RuleContext(private val danger: DangerDSL, private val scope: CoroutineScope) :
+  DangerDSL by danger, CoroutineScope by scope
 
 internal class Rule(
   val id: String,
@@ -33,8 +31,10 @@ internal class Rule(
  * the chain of rules with early exists. For example, if the PR was made by a bot you may not want
  * to evaluate the remaining rules in your chain.
  *
- * @param id the unique identifier of the rule to register. These must be unique for a given execution.
- * @param dependsOn a list of rules that this rule depends on. These must execute before this one is allowed to.
+ * @param id the unique identifier of the rule to register. These must be unique for a given
+ *   execution.
+ * @param dependsOn a list of rules that this rule depends on. These must execute before this one is
+ *   allowed to.
  * @param block the rule block to execute when [applyRules] is called
  */
 fun rule(id: String, vararg dependsOn: String, block: suspend RuleContext.() -> RuleResult) {
@@ -43,17 +43,13 @@ fun rule(id: String, vararg dependsOn: String, block: suspend RuleContext.() -> 
 }
 
 /**
- * The result of running a rule so that the manager can determine whether to stop evaluating future rules
- * or to continue.
+ * The result of running a rule so that the manager can determine whether to stop evaluating future
+ * rules or to continue.
  */
 sealed interface RuleResult {
-  /**
-   * Return this to continue evaluating rules in this workflow
-   */
+  /** Return this to continue evaluating rules in this workflow */
   data object Continue : RuleResult
 
-  /**
-   * Return this to stop evaluating all rules in this workflow
-   */
+  /** Return this to stop evaluating all rules in this workflow */
   data object Exit : RuleResult
 }

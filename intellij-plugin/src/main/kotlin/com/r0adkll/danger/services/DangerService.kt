@@ -1,5 +1,7 @@
 package com.r0adkll.danger.services
 
+import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.util.ExecUtil
 import com.intellij.ide.plugins.PluginManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.Service.Level.PROJECT
@@ -8,8 +10,10 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.getCanonicalPath
 import com.intellij.openapi.util.io.toNioPathOrNull
 import com.r0adkll.danger.DangerScriptDefinitionsSource
+import com.r0adkll.danger.settings.settings
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -18,7 +22,9 @@ import kotlin.io.path.exists
 import kotlin.io.path.outputStream
 import kotlin.script.experimental.host.ScriptingHostConfiguration
 import kotlin.script.experimental.jvm.defaultJvmScriptingHostConfiguration
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.kotlin.idea.core.script.ScriptDefinitionsManager
 import org.jetbrains.kotlin.idea.core.script.loadDefinitionsFromTemplatesByPaths
@@ -29,12 +35,17 @@ import org.jetbrains.kotlin.scripting.definitions.getEnvironment
 fun Project.danger(): DangerService = service()
 
 @Service(PROJECT)
-class DangerService(private val project: Project) {
+class DangerService(private val project: Project, private val scope: CoroutineScope) {
+
+  var dangerVersion: String? = null
+  var dangerLocation: String? = null
 
   var dangerConfig: DangerConfig? = null
   var dangerScriptDefinition: ScriptDefinition? = null
 
   private val logger: Logger = thisLogger()
+
+  fun reloadAsync() = scope.launch { load() }
 
   suspend fun load() {
     // This should 1:1 match our danger-kotlin version for consistency
@@ -46,10 +57,13 @@ class DangerService(private val project: Project) {
 
     // First search for a system installed danger source jar and use it,
     // if not default back to the local project installed jar.
-    // TODO: We should make this location configurable in a settings page
-    val dangerKotlinJar = getSystemDangerSourceJarPath() ?: getDangerSourceJarPath(pluginVersion)
+    val dangerKotlinJar =
+      getCustomDangerSourceJarPath()
+        ?: getSystemDangerSourceJarPath()
+        ?: getProjectDangerSourceJarPath(pluginVersion)
+
     if (dangerKotlinJar.exists()) {
-      logger.info("danger-kotlin.jar found!")
+      logger.info("danger-kotlin.jar found @ ${dangerKotlinJar.absolutePathString()}")
       dangerConfig = DangerConfig(dangerKotlinJar)
       dangerScriptDefinition = scriptDefinition(dangerConfig!!)
       reloadScriptDefinitions()
@@ -57,6 +71,19 @@ class DangerService(private val project: Project) {
       logger.warn("danger-kotlin.jar could not be found in this project, copy from plugin")
       copyDangerJar(pluginVersion)
       reloadScriptDefinitions()
+    }
+
+    // Now attempt to fetch the current installed danger version / locations
+    try {
+      dangerVersion =
+        ExecUtil.execAndReadLine(GeneralCommandLine("danger-kotlin", "--version"))
+          ?.replace("danger-kotlin version ", "")
+          ?.trim()
+      dangerLocation = ExecUtil.execAndReadLine(GeneralCommandLine("which", "danger-kotlin"))
+
+      thisLogger().warn("Danger ($dangerVersion, $dangerLocation)")
+    } catch (e: Exception) {
+      thisLogger().error("Unable to fetch current danger-kotlin information")
     }
   }
 
@@ -98,7 +125,7 @@ class DangerService(private val project: Project) {
           ?: error("Error loading packaged jar")
 
       getDangerSourceDirectory(version)?.createDirectories()
-      val outputPath = getDangerSourceJarPath(version)
+      val outputPath = getProjectDangerSourceJarPath(version)
 
       packagedJar.copyTo(outputPath.outputStream())
 
@@ -116,7 +143,7 @@ class DangerService(private val project: Project) {
       ?.resolve(version)
   }
 
-  private fun getDangerSourceJarPath(version: String): Path {
+  private fun getProjectDangerSourceJarPath(version: String): Path {
     return getDangerSourceDirectory(version)?.resolve(DANGER_SOURCE_JAR_NAME)
       ?: error("Unable to resolve danger source jar file path")
   }
@@ -130,6 +157,15 @@ class DangerService(private val project: Project) {
           if (it) logger.info("System danger-kotlin.jar found! ${path.absolutePathString()}")
         }
       }
+  }
+
+  private fun getCustomDangerSourceJarPath(): Path? {
+    return project
+      .settings()
+      .customDangerJarSourcePath
+      ?.takeIf { it.isNotBlank() }
+      ?.let { Path.of(getCanonicalPath(it)) }
+      ?.takeIf { it.exists() }
   }
 }
 

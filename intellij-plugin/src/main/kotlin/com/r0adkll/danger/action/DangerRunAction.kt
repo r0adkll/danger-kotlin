@@ -58,7 +58,7 @@ class DangerRunAction(
         DangerBundle.message(
           "run.action.configuration.name",
           dangerFile.fileName.name,
-          command.option.name.uppercase(),
+          command.option.name,
         ),
         DangerRunConfigurationType::class.java,
       )

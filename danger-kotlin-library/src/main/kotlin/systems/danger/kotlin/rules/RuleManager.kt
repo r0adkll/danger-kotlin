@@ -39,7 +39,6 @@ object RuleManager {
  * that they are registered and depend on.
  *
  * For example, you can register a rule like so:
- *
  * ```
  * rule("pr-title-check") {
  *   if (!github.pullRequest.title.matches(TITLE_REGEX)) {
