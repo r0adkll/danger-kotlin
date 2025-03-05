@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.BrowseFolderDescriptor.Companion.withPathToTextConvertor
 import com.intellij.openapi.ui.BrowseFolderDescriptor.Companion.withTextToPathConvertor
 import com.intellij.openapi.ui.DialogPanel
+import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.getCanonicalPath
 import com.intellij.openapi.ui.getPresentablePath
 import com.intellij.ui.dsl.builder.*
@@ -64,14 +65,19 @@ class DangerSettingsConfigurable(private val project: Project) :
       }
       row {
         label(DangerBundle.message("settings.configurable.custom-jar.title"))
-        textFieldWithBrowseButton(
-            fileChooserDescriptor =
+        cell(TextFieldWithBrowseButton())
+          .applyToComponent {
+            @Suppress("DEPRECATION", "removal")
+            addBrowseFolderListener(
+              null,
+              null,
+              null,
               FileChooserDescriptor(true, false, true, true, false, false)
-                .withExtensionFilter("*.jar")
+                //              .withExtensionFilter("*.jar") // TODO 243+
                 .withPathToTextConvertor(::getPresentablePath)
                 .withTextToPathConvertor(::getCanonicalPath),
-            project = project,
-          )
+            )
+          }
           .bindText(
             getter = { settings.customDangerJarSourcePath ?: "" },
             setter = { settings.customDangerJarSourcePath = it },

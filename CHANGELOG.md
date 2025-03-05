@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+
+# 2.0.3
 - Added a new `Rules` feature that allows you to write multiple danger rules for a single run in a graphable order.
 - Added IntelliJ Plugin settings panel for displaying current information and allow custom source jar for scripts
 - Fixed how IJ Plugin searches PR urls for `danger-kotlin pr` runs.
