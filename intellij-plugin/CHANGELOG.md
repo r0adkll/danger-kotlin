@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.0.3]
+
 ### Added
 
 - Added settings panel for view `danger` an `danger-kotlin` installation information
