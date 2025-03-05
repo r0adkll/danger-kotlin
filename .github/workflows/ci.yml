@@ -57,3 +57,19 @@ jobs:
         run: DEBUG='*' danger-kotlin ci --dangerfile Dangerfile_ci.df.kts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  verify plugin:
+    name: Verify Plugin
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+
+     - name: Set up JDK 23
+       uses: actions/setup-java@v4
+       with:
+         distribution: "temurin"
+         java-version: 23
+         cache: gradle
+
+     - name: Verify Plugin
+       run: ./gradlew :intellij-plugin:verifyPlugin
