@@ -17,7 +17,7 @@ data class DangerDSLModel(
   @SerialName("bitbucket_cloud") private val _bitBucketCloud: BitBucketCloud? = null,
   @SerialName("gitlab") private val _gitlab: GitLab? = null,
   override val git: Git,
-): DangerDSL {
+) : DangerDSL {
 
   override val github: GitHub
     get() = _github!!

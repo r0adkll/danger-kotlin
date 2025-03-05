@@ -13,6 +13,12 @@
   <resource-bundle>messages.DangerBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
+    <projectConfigurable
+        parentId="tools"
+        instance="com.r0adkll.danger.settings.DangerSettingsConfigurable"
+        id="com.r0adkll.danger.settings.DangerSettingsConfigurable"
+        displayName="Danger Kotlin"/>
+
     <configurationType implementation="com.r0adkll.danger.run.DangerRunConfigurationType" />
 
     <postStartupActivity implementation="com.r0adkll.danger.DangerProjectActivity"/>
