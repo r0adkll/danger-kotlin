@@ -58,7 +58,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  verify plugin:
+  verify-plugin:
     name: Verify Plugin
     runs-on: ubuntu-latest
     steps:
