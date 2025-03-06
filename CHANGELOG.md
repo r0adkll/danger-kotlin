@@ -13,6 +13,7 @@
 ## Unreleased
 - Fixed ANR when project is loading in the IDE
 - Fixed IJ run actions not working on production IDE builds.
+- Fixed IJ plugin not updating run actions when branches change
 
 # 2.0.3
 - Added a new `Rules` feature that allows you to write multiple danger rules for a single run in a graphable order.
