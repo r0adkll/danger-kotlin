@@ -1,0 +1,14 @@
+[data-md-color-scheme="danger"] {
+    --md-primary-fg-color:          #4DFF95;
+    --md-primary-fg-color--light:   #4DFF95;
+    --md-primary-fg-color--dark:    #FFEC00;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-hue: 210;
+  --md-primary-fg-color:          #FFEC00;
+}
+
+.md-header, .md-tabs {
+  --md-primary-bg-color:    #000000;
+}

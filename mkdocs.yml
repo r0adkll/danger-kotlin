@@ -1,4 +1,71 @@
 site_name: Danger Kotlin
-site_url: https://mydomain.org/mysite
+site_url: https://r0adkll.github.io/danger-kotlin
+repo_name: dagner-kotlin
+repo_url: https://github.com/r0adkll/danger-kotlin
+site_description: "Kotlin based Danger script evaluator"
+site_author: r0adkll
+
+extra_css:
+  - stylesheets/extra.css
+
 theme:
   name: material
+  logo: assets/icon.svg
+  favicon: assets/favicon.svg
+
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: danger
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+      # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Suse
+    code: Jetbrains Mono
+
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+
+markdown_extensions:
+  - smarty
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.emoji
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - tables
+  - admonition
+  - attr_list
+  - md_in_html
+
+nav:
+  - 'Getting Started': index.md
+  - 'Dangerfile':
+      - 'Basic': basic.md
+      - 'Advanced': advanced.md
+      - 'Rules': rules.md
+  - 'Usage': usage.md
+  - 'Intellij Plugin': intellij-plugin.md

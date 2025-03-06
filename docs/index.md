@@ -1,17 +1,52 @@
-# Welcome to MkDocs
+<p align="center">
+  <img width=200 height=200 src="assets/icon.svg"/></br>
+  ⚠️ <i>Stop saying "you forgot to …" in code review in Kotlin</i>
+</p>
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# Danger Kotlin
 
-## Commands
+This project is a middleware layer for [Danger][] that evaluates your Kotlin script based [Dangerfile][] against your pull requests.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+## Installation
 
-## Project layout
+<details open>
+<summary>Mac - Apple Silicon</summary>
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+```shell
+homebrew install r0adkll/tap/danger-kotlin
+```
+
+</details>
+
+<details open>
+<summary>Mac - Intel</summary>
+
+```shell
+homebrew install r0adkll/tap/danger-kotlin-intel
+```
+
+</details>
+
+<details open>
+<summary>Linux</summary>
+
+```shell
+bash <(curl -s https://raw.githubusercontent.com/r0adkll/danger-kotlin/main/scripts/install.sh)
+source ~/.bash_profile
+```
+
+</details>
+
+<details>
+<summary>Directly from source</summary>
+
+```shell
+git clone https://github.com/r0adkll/danger-kotlin.git
+sudo make install
+```
+
+</details>
+
+[Danger]: https://danger.systems/js
+[Dangerfile]: basic
+[IntelliJ Plugin]: intellij-plugin.md
