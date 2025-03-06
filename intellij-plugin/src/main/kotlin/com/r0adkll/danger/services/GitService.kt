@@ -23,10 +23,7 @@ import kotlinx.coroutines.withContext
 fun Project.gitService(): GitService = service()
 
 @Service(PROJECT)
-class GitService(
-  private val project: Project,
-  private val scope: CoroutineScope,
-) {
+class GitService(private val project: Project, private val scope: CoroutineScope) {
 
   var gitRepository: GitRepository? = null
   var gitState: GitState? = null
@@ -34,19 +31,27 @@ class GitService(
   private val logger = thisLogger()
 
   init {
-    project.messageBus.connect(GitDisposable.getInstance(project))
-      .subscribe(GitRepository.GIT_REPO_STATE_CHANGE, object : GitRepositoryStateChangeListener {
-        override fun repositoryChanged(repository: GitRepository, previousInfo: GitRepoInfo, info: GitRepoInfo) {
-          // Reload local git information
-          gitRepository = repository
-          gitState = calculateGitState(repository)
+    project.messageBus
+      .connect(GitDisposable.getInstance(project))
+      .subscribe(
+        GitRepository.GIT_REPO_STATE_CHANGE,
+        object : GitRepositoryStateChangeListener {
+          override fun repositoryChanged(
+            repository: GitRepository,
+            previousInfo: GitRepoInfo,
+            info: GitRepoInfo,
+          ) {
+            // Reload local git information
+            gitRepository = repository
+            gitState = calculateGitState(repository)
 
-          scope.launch(Dispatchers.IO) {
-            // Reload/Load pull request URL
-            project.gitHubService().findCurrentPullRequestUrl()
+            scope.launch(Dispatchers.IO) {
+              // Reload/Load pull request URL
+              project.gitHubService().findCurrentPullRequestUrl()
+            }
           }
-        }
-      })
+        },
+      )
   }
 
   fun currentGitRepository(force: Boolean = false): GitRepository? {
@@ -64,13 +69,10 @@ class GitService(
   suspend fun load(): GitState? =
     withContext(Dispatchers.IO) {
       gitRepository = currentGitRepository(force = true)
-      gitRepository?.let { repo ->
-        calculateGitState(repo)
-          .also { gitState = it }
-      }
+      gitRepository?.let { repo -> calculateGitState(repo).also { gitState = it } }
     }
 
-  private fun calculateGitState(repo: GitRepository): GitState{
+  private fun calculateGitState(repo: GitRepository): GitState {
     val trackedBranch = repo.currentBranch?.findTrackedBranch(repo)
     val hasStagedChanges = !repo.stagingAreaHolder.isEmpty
     val baseBranch =
@@ -81,8 +83,7 @@ class GitService(
 
     val diff =
       if (!isBaseBranch && hasBaseBranch) {
-        val baseBranch =
-          repo.branches.localBranches.first { it.name in DEFAULT_BASE_BRANCHES }!!
+        val baseBranch = repo.branches.localBranches.first { it.name in DEFAULT_BASE_BRANCHES }!!
         GitUtil.getPathsDiffBetweenRefs(
           Git.getInstance(),
           repo,

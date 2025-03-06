@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.0.4]
+
 ### Fixed
 
 - Fixed run actions not working on production IDE builds

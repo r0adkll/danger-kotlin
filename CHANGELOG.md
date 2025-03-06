@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+
+# 2.0.4
 - Fixed ANR when project is loading in the IDE
 - Fixed IJ run actions not working on production IDE builds.
 - Fixed IJ plugin not updating run actions when branches change

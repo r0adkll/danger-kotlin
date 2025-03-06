@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=2.0.3
+VERSION=2.0.4
 KOTLIN_VERSION=2.1.10
 
 while getopts v:h: flag
