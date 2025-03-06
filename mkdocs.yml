@@ -1,9 +1,10 @@
 site_name: Danger Kotlin
 site_url: https://r0adkll.github.io/danger-kotlin
-repo_name: dagner-kotlin
+repo_name: danger-kotlin
 repo_url: https://github.com/r0adkll/danger-kotlin
 site_description: "Kotlin based Danger script evaluator"
 site_author: r0adkll
+remote_branch: gh-pages
 
 extra_css:
   - stylesheets/extra.css
