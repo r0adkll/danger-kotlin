@@ -35,9 +35,9 @@ dependencies {
   // IntelliJ Platform Gradle Plugin Dependencies Extension - read more:
   // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
   intellijPlatform {
-    // Meerkat RC 2 | 2024.3.2
+    // Meerkat | 2024.3.2
     // https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html#2024
-    androidStudio("2024.3.1.11")
+    androidStudio("2024.3.1.13")
 
     // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file
     // for bundled IntelliJ Platform plugins.
