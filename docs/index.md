@@ -47,6 +47,18 @@ sudo make install
 
 </details>
 
+## Write your first Dangerfile
+
+Check out the [Dangerfile > Basic][Dangerfile] page to get started!
+
+## Running your Dangerfile's
+
+Check out the [Usage](usage.md) page to get started!
+
+## IDE Plugin
+
+Check out the [IntelliJ Plugin](intellij-plugin.md) page to get started!
+
 [Danger]: https://danger.systems/js
-[Dangerfile]: basic
+[Dangerfile]: basic.md
 [IntelliJ Plugin]: intellij-plugin.md
