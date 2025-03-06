@@ -62,3 +62,7 @@ danger_out.json
 .danger/
 
 .secrets/
+
+# Python3 Virtual Env
+venv/
+site/
