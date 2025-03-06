@@ -34,7 +34,7 @@ class CreateDangerRunAction(private val dangerEntrypointElement: PsiElement) : A
     val runManager = RunManager.getInstance(event.project!!)
     val configuration =
       runManager.createConfiguration(
-        DangerBundle.message("run.action.configuration.name", dangerFile.fileName.name),
+        DangerBundle.message("run.action.configuration.create.name", dangerFile.fileName.name),
         DangerRunConfigurationType::class.java,
       )
     configuration.isEditBeforeRun = true

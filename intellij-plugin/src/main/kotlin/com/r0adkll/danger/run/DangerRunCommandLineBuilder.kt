@@ -1,7 +1,7 @@
 package com.r0adkll.danger.run
 
 import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.execution.configurations.GeneralCommandLine.ParentEnvironmentType.SYSTEM
+import com.intellij.execution.configurations.GeneralCommandLine.ParentEnvironmentType
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.Service.Level.PROJECT
 import com.intellij.openapi.components.service
@@ -32,8 +32,8 @@ class DangerRunCommandLineBuilder(private val project: Project) {
         )
       CommandOption.PR -> buildPRCommand(Command.PR(requireNotNull(prUrl)), dangerFilePath)
     }.apply {
+      withParentEnvironmentType(ParentEnvironmentType.CONSOLE)
       withWorkingDirectory(project.basePath?.toNioPathOrNull())
-      withParentEnvironmentType(SYSTEM)
 
       // This should attempt to hydrate this run configuration with the GH token
       // automatically, if the Github integration has an account.

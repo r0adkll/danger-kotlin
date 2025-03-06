@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed run actions not working on production IDE builds
+- Fixed thread blocking on project start
+
 ## [2.0.3]
 
 ### Added
