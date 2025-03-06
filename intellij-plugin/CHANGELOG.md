@@ -8,6 +8,7 @@
 
 - Fixed run actions not working on production IDE builds
 - Fixed thread blocking on project start
+- Fixed run actions not updating when branches change
 
 ## [2.0.3]
 
