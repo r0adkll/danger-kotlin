@@ -18,7 +18,7 @@ Version](https://img.shields.io/badge/r0adkll/danger%20kotlin-v2.0.4-orange)](ht
 [![Maven Central - SDK](https://img.shields.io/maven-central/v/com.r0adkll.danger/danger-kotlin-sdk.svg?label=danger-kotlin-sdk)](https://search.maven.org/search?q=g:%22com.r0adkll%22%20AND%20a:%22danger-kotlin-sdk%22)
 [![Sonatype Snapshot](https://img.shields.io/nexus/s/https/oss.sonatype.org/com.r0adkll.danger/danger-kotlin-sdk.svg)](https://oss.sonatype.org/content/repositories/snapshots/com/r0adkll/danger/)
 
-## :warning: https://r0adkll.github.io/danger-kotlin/
+### :warning: https://r0adkll.github.io/danger-kotlin/
 
 # Setup
 
