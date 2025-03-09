@@ -5,6 +5,9 @@ on the full Danger library.
 
 ## Setup
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.r0adkll.danger/danger-kotlin-sdk.svg)](https://search.maven.org/search?q=g:com.r0adkll.danger)
+[![Sonatype Snapshot](https://img.shields.io/nexus/s/https/oss.sonatype.org/com.r0adkll.danger/danger-kotlin-sdk.svg)](https://oss.sonatype.org/content/repositories/snapshots/com/r0adkll/danger/)
+
 Add the sdk as a dependency to your project:
 
 ```kotlin

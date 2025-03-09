@@ -125,6 +125,29 @@ jobs:
           asset_name: intellij-plugin-${{ env.VERSION_CODE }}-signed.zip
           asset_content_type: application/zip
 
+  maven-publish:
+    name: Publish SDK to mavenCentral
+    needs: [ dangerKotlinLibrary-shadowJar ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 23
+          cache: gradle
+
+      - name: Publish SDK
+        run: ./gradlew :danger-kotlin-sdk:publishToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.MAVEN_SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_SIGNING_KEY_PASSWORD }}
+
   docker-build-push:
     name: Build and Push Docker image
     permissions:
