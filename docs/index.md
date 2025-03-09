@@ -59,6 +59,10 @@ Check out the [Usage](usage.md) page to get started!
 
 Check out the [IntelliJ Plugin](intellij-plugin.md) page to get started!
 
+## Extending Danger Kotlin
+
+Check out [Plugins](sdk.md) page for more information on extending Danger with custom plugins.
+
 [Danger]: https://danger.systems/js
 [Dangerfile]: basic.md
 [IntelliJ Plugin]: intellij-plugin.md

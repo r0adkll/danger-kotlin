@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 import java.io.ByteArrayOutputStream
 
 plugins { kotlin("jvm") }
@@ -11,7 +9,10 @@ version = "sample"
 /**
  * A custom task to take the 'jar' outputs from this project and copy them to the locally installed
  * danger-kotlin libs directory so the `Dangerfile_ci.df.kts` script can resolve and test the sample
- * plugin in CI
+ * plugin in CI.
+ *
+ * TODO: Create publishable SDK gradle plugin that can automatically add this dependency and install
+ *  the 'jar' task outputs to the locally installed danger-kotlin libs directory
  */
 tasks.register("installDangerPlugin") {
   outputs.doNotCacheIf("We shouldn't cache this task") { true }
