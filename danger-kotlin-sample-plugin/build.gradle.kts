@@ -12,7 +12,7 @@ version = "sample"
  * plugin in CI.
  *
  * TODO: Create publishable SDK gradle plugin that can automatically add this dependency and install
- *  the 'jar' task outputs to the locally installed danger-kotlin libs directory
+ *   the 'jar' task outputs to the locally installed danger-kotlin libs directory
  */
 tasks.register("installDangerPlugin") {
   outputs.doNotCacheIf("We shouldn't cache this task") { true }
