@@ -18,7 +18,7 @@ import systems.danger.kotlin.*
 import systems.danger.kotlin.models.danger.DangerDSL
 import systems.danger.samples.plugin.SamplePlugin
 
-register plugin SamplePlugin
+Danger register SamplePlugin
 
 danger(args) {
   val allSourceFiles = git.modifiedFiles + git.createdFiles

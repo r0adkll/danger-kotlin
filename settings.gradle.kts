@@ -24,7 +24,7 @@ include(
   ":danger-kotlin-library",
   ":danger-kotlin-sdk",
   ":danger-kotlin-kts",
-  ":danger-plugin-installer",
+  ":danger-kotlin-sample-plugin",
 )
 
 include(":intellij-plugin")

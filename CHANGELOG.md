@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+- Refactoring how the `danger-kotlin-sdk` integrates with the main library
+- Simplified test plugin setup in the project
 
 # 2.0.4
 - Fixed ANR when project is loading in the IDE

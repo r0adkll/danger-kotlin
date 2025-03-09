@@ -6,16 +6,14 @@ import systems.danger.kotlin.sdk.DangerPlugin
 /**
  * Register Helps to register a [DangerPlugin] before usage. contains the plugins to be registered
  * within [DangerContext]
- *
- * @constructor Create empty Register helper
  */
-object register {
-  internal var dangerPlugins = mutableListOf<DangerPlugin>()
+object Danger {
+  private val plugins = mutableMapOf<String, DangerPlugin>()
 
   /**
    * Add a plugin to Danger Example code:
    * ```
-   * register plugin DangerPluginName
+   * Danger register DangerPluginName
    *
    * // Then
    *
@@ -26,36 +24,35 @@ object register {
    *
    * @param plugin the [DangerPlugin] to be registered
    */
-  infix fun plugin(plugin: DangerPlugin) {
-    dangerPlugins.add(plugin)
+  infix fun register(plugin: DangerPlugin) {
+    checkNotRegistered(plugin)
+    plugins[plugin.id] = plugin
+  }
+
+  /** We don't want to allow */
+  private fun checkNotRegistered(plugin: DangerPlugin) {
+    check(!plugins.containsKey(plugin.id)) {
+      "A plugin with the id '${plugin.id}' has already been registered."
+    }
   }
 
   /**
-   * Add more than one plugin to Danger Example code:
-   * ```
-   * register.plugins(DangerPluginName1, DangerPluginName2, ...)
+   * Register the [DangerContext] with all installed [DangerPlugin]s
    *
-   * // Then
-   *
-   * danger(args) {
-   * ...
-   * }
-   * ```
-   *
-   * @param pluginArgs the [DangerPlugin]s
+   * @param context the [DangerContext] implementation that all plugins use to communicate to the
+   *   Danger instance.
    */
-  fun plugins(vararg pluginArgs: DangerPlugin) {
-    dangerPlugins.addAll(pluginArgs)
+  internal fun installContext(context: DangerContext) {
+    plugins.values.forEach { it.registeredContext = context }
   }
 }
 
 /**
  * Block that gave another option for registering plugins Example code:
  * ```
- * register {
- *     plugin(DangerPlugin1)
- *     plugin(DangerPlugin2)
- *     plugins(DangerPlugin3, DangerPlugin4)
+ * plugins {
+ *     register(DangerPlugin1)
+ *     register(DangerPlugin2)
  * }
  *
  * // Then
@@ -68,13 +65,4 @@ object register {
  * @param block
  * @receiver [register] the registered plugins container
  */
-inline fun register(block: register.() -> Unit) = register.run(block)
-
-/**
- * internal util function that assign the [DangerContext] to a target [DangerPlugin]
- *
- * @param dangerContext the [DangerContext]
- */
-internal fun DangerPlugin.withContext(dangerContext: DangerContext) {
-  registeredContext = dangerContext
-}
+inline fun plugins(block: Danger.() -> Unit) = Danger.run(block)

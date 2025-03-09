@@ -99,13 +99,11 @@ data class Violation(val message: String, val file: String? = null, val line: In
 /**
  * Describe the Sdk, contains:
  * - [Sdk.API_VERSION]
- * - [Sdk.VERSION_NAME]
  *
  * @constructor Create empty Sdk
  */
 object Sdk {
-  const val VERSION_NAME = "1.1"
-  const val API_VERSION = 2
+  const val API_VERSION = 3
 }
 
 /**
@@ -138,9 +136,6 @@ object Sdk {
  * @constructor Create empty Danger plugin
  */
 abstract class DangerPlugin {
-  companion object {
-    const val DEVELOPED_WITH_API = Sdk.API_VERSION
-  }
 
   // The plugin unique id
   abstract val id: String

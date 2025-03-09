@@ -49,7 +49,7 @@ internal class MainDangerRunner(jsonInputFilePath: FilePath, jsonOutputPath: Fil
   // Collect the registered plugins and initialize with the DangerContext
   // then creates an output json file
   init {
-    register.dangerPlugins.forEach { it.withContext(this) }
+    Danger.installContext(this)
     commit()
   }
 

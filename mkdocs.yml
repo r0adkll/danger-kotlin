@@ -69,4 +69,5 @@ nav:
       - 'Advanced': advanced.md
       - 'Rules': rules.md
   - 'Usage': usage.md
+  - 'Plugins': sdk.md
   - 'Intellij Plugin': intellij-plugin.md
