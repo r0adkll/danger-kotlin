@@ -19,7 +19,7 @@ dependencies {
   implementation(libs.kotlin.main.kts)
   implementation(libs.kotlin.stdlib.jdk8)
 
-  implementation(libs.bundles.testing)
+  testImplementation(libs.bundles.testing)
 }
 
 tasks.named<ShadowJar>("shadowJar") {

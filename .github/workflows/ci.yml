@@ -43,15 +43,8 @@ jobs:
       - name: Run tests
         run: sudo ./gradlew danger-kotlin-library:test
 
-      - name: Install Plugin Installer
-        run: sudo ./gradlew danger-plugin-installer:publishToMavenLocal
-
       - name: Build and Install Sample Plugin
-        working-directory: ./danger-kotlin-sample-plugin
-        run: |
-          sudo gradle wrapper
-          sudo ./gradlew build
-          sudo ./gradlew installDangerPlugin
+        run: sudo ./gradlew installDangerPlugin --no-configuration-cache
 
       - name: Run Danger-Kotlin
         run: DEBUG='*' danger-kotlin ci --dangerfile Dangerfile_ci.df.kts

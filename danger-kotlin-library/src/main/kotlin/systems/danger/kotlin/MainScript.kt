@@ -28,7 +28,8 @@ internal val runnerInstance: MainDangerRunner
  * @param block the [DangerDSL] block
  * @receiver the [DangerDSL] descriptor
  */
-inline fun danger(args: Array<String>, block: DangerDSL.() -> Unit) = Danger(args).run(block)
+inline fun danger(args: Array<String>, block: DangerDSL.() -> Unit) =
+  createOrReturnDangerDSL(args).run(block)
 
 /**
  * Create and return a [DangerDSL] descriptor Example code:
@@ -39,7 +40,7 @@ inline fun danger(args: Array<String>, block: DangerDSL.() -> Unit) = Danger(arg
  * @param args
  * @return a new [DangerDSL] descriptor
  */
-fun Danger(args: Array<String>): DangerDSL {
+fun createOrReturnDangerDSL(args: Array<String>): DangerDSL {
   if (dangerRunner == null) {
     val argsCount = args.count()
 
