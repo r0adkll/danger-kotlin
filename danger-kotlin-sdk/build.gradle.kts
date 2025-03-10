@@ -2,10 +2,15 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   kotlin("jvm")
+  id("java-test-fixtures")
   alias(libs.plugins.mavenPublish)
 }
 
-dependencies { implementation(libs.kotlin.stdlib.jdk8) }
+dependencies {
+  implementation(libs.kotlin.stdlib.jdk8)
+
+  testFixturesImplementation(libs.kotlin.stdlib)
+}
 
 kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
 
