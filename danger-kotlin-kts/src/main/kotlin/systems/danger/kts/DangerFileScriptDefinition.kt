@@ -61,7 +61,7 @@ object DangerFileScriptDefinition :
   })
 
 class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
-  private val externalDependenciesResolvers = setOf(MavenDependenciesResolver())
+  private val externalDependenciesResolvers = setOf(HttpProxyExternalDependencyResolver(MavenDependenciesResolver()))
   private val resolvers =
     DANGER_DEFAULT_FLAT_DIRS.map { File(it) }
       .filter { it.exists() }
