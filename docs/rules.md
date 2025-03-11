@@ -62,3 +62,16 @@ danger(args) {
   applyRules()
 }
 ```
+
+or use the `@file:ImportDirectory` annotation to import an entire directory of Dangerfile scripts into your main file
+
+```kotlin
+@file:ImportDirectory("rules")
+
+import systems.danger.kotlin.*
+import systems.danger.kotlin.rule.*
+
+danger(args) {
+  applyRules()
+}
+```

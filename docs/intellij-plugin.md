@@ -3,6 +3,12 @@
 This project provides an IDE plugin to automatically add the Danger kotlin script definition to your IDE so syntax highlighting and auto-complete work out of the box.
 The plugin will also detect the `danger(args) { … }` in your scripts and give you a gutter run action, ▶︎, that lets your test your Dangerfiles directly in the IDE.
 
+> [!NOTE]
+> All `@file:Import` and `@file:ImportDirectory` annotations are disabled under the hood when editing Dangerfile scripts
+> in your IDE. This is due to a bug in IntelliJ breaking when trying to load other scripts into scripts.
+>
+> See https://youtrack.jetbrains.com/issue/KTIJ-16352
+
 ## Git Integration
 As discussed in the [usage][] page you can run `danger-kotlin local` against your local changes in git against a base branch (_i.e. main, master, develop, etc_). The
 IntelliJ plugin will automatically detect when you are on a branch with changes against a base branch and give you a run action to test your Dangerfile
