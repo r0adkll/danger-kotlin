@@ -106,3 +106,46 @@ danger(args) {
   SomeOtherPlugin.doOtherStuff()
 }
 ```
+
+## Testing
+
+The SDK provides test fixtures to make it easier to test your plugins. Just import them like so:
+
+```kotlin
+dependencies {
+  testImplementation(testFixtures("com.r0adkll.danger:danger-kotlin-sdk:<latest_version>"))
+}
+```
+
+and then setup your test
+
+```kotlin
+class FailWithRetryMessageTest {
+  private val dangerContext = TestDangerContext()
+
+  @BeforeEach
+  fun setUp() {
+    ExamplePlugin.registeredContext = dangerContext
+  }
+
+  @Test
+  fun `failWithRetryMessage only posts message once`() {
+    // given
+    val fail1 = "Test failure 1"
+    val fail2 = "Test failure 2"
+
+    // when
+    ExamplePlugin.failWithRetryMessage(fail1)
+    ExamplePlugin.failWithRetryMessage(fail2)
+
+    // then
+    expectThat(dangerContext.messages)
+      .hasSize(1)
+      .containsExactly(Violation(ExamplePlugin.retryMessage))
+
+    expectThat(dangerContext.fails)
+      .hasSize(2)
+      .containsExactly(Violation(fail1), Violation(fail2))
+  }
+}
+```
