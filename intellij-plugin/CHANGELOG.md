@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- New `@ImportDirectory` annotation for importing entire directories of Dangerfiles.
+
+### Fixed
+
+- Disabled `@Import` and `@ImportDirectory` annotations when editing a Dangerfile in the IDE to since these break the editor. See https://youtrack.jetbrains.com/issue/KTIJ-16352.
+
 ## [2.0.4]
 
 ### Fixed
