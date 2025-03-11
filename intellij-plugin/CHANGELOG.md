@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.0.5]
+
 ### Added
 
 - New `@ImportDirectory` annotation for importing entire directories of Dangerfiles.

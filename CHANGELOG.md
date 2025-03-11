@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+
+# 2.0.5
 - Refactoring how the `danger-kotlin-sdk` integrates with the main library
 - Simplified test plugin setup in the project
 - Added test fixtures for `danger-kotlin-sdk`
