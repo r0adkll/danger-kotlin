@@ -181,7 +181,19 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
         @Suppress("DEPRECATION_ERROR")
         internalScriptingRunSuspend {
           resolver.resolveFromScriptSourceAnnotations(
-            annotations.filter { it.annotation is DependsOn || it.annotation is Repository }
+            annotations
+              .filter { it.annotation is DependsOn || it.annotation is Repository }
+              .map {
+                if (it.annotation is Repository) {
+                  ScriptSourceAnnotation(
+                    annotation =
+                      RepositoryHttpProxyFilter.filterRepository(it.annotation as Repository),
+                    location = it.location,
+                  )
+                } else {
+                  it
+                }
+              }
           )
         }
       } catch (e: Throwable) {

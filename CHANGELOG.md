@@ -16,6 +16,7 @@
 - Added test fixtures for `danger-kotlin-sdk`
 - Add new `@file:ImportDirectory` kscript annotation for importing entire directories of scripts
 - Disabled all `@Import` and `@ImportDirectory` annotations when loading the script in an IDE context. See https://youtrack.jetbrains.com/issue/KTIJ-16352.
+- Adding support for `http_proxy` so that maven repositories/dependencies can be resolved in certain CI setups.
 
 # 2.0.4
 - Fixed ANR when project is loading in the IDE
