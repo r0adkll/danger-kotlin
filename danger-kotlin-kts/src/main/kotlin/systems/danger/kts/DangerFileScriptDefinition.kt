@@ -9,6 +9,7 @@ import kotlin.script.experimental.dependencies.*
 import kotlin.script.experimental.dependencies.maven.MavenDependenciesResolver
 import kotlin.script.experimental.host.FileBasedScriptSource
 import kotlin.script.experimental.host.FileScriptSource
+import kotlin.script.experimental.host.ScriptingHostConfiguration
 import kotlin.script.experimental.impl.internalScriptingRunSuspend
 import kotlin.script.experimental.jvm.compat.mapLegacyDiagnosticSeverity
 import kotlin.script.experimental.jvm.compat.mapLegacyScriptPosition
@@ -20,6 +21,7 @@ import kotlin.script.experimental.jvmhost.jsr223.importAllBindings
 import kotlin.script.experimental.jvmhost.jsr223.jsr223
 import kotlin.script.experimental.util.filterByAnnotationType
 import org.jetbrains.kotlin.mainKts.*
+import systems.danger.kts.annotations.ImportDirectory
 
 @Suppress("unused")
 @KotlinScript(
@@ -33,6 +35,7 @@ abstract class DangerFileScript(val args: Array<String>)
 object DangerFileScriptDefinition :
   ScriptCompilationConfiguration({
     defaultImports(
+      ImportDirectory::class,
       DependsOn::class,
       Repository::class,
       Import::class,
@@ -42,6 +45,7 @@ object DangerFileScriptDefinition :
     jvm { dependenciesFromClassContext(DangerFileScriptDefinition::class, "danger-kotlin") }
     refineConfiguration {
       onAnnotations(
+        ImportDirectory::class,
         DependsOn::class,
         Repository::class,
         Import::class,
@@ -71,7 +75,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
     context: ScriptConfigurationRefinementContext
   ): ResultWithDiagnostics<ScriptCompilationConfiguration> = processAnnotations(context)
 
-  fun processAnnotations(
+  private fun processAnnotations(
     context: ScriptConfigurationRefinementContext
   ): ResultWithDiagnostics<ScriptCompilationConfiguration> {
     val diagnostics = arrayListOf<ScriptDiagnostic>()
@@ -100,24 +104,71 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
     val scriptBaseDir = (context.script as? FileBasedScriptSource)?.file?.parentFile
     val importedSources = linkedMapOf<String, Pair<File, String>>()
     var hasImportErrors = false
-    annotations.filterByAnnotationType<Import>().forEach { scriptAnnotation ->
-      scriptAnnotation.annotation.paths.forEach { sourceName ->
-        val file = (scriptBaseDir?.resolve(sourceName) ?: File(sourceName)).normalize()
-        val keyPath = file.absolutePath
-        val prevImport = importedSources.put(keyPath, file to sourceName)
-        if (prevImport != null) {
-          diagnostics.add(
-            ScriptDiagnostic(
-              ScriptDiagnostic.unspecifiedError,
-              "Duplicate imports: \"${prevImport.second}\" and \"$sourceName\"",
-              sourcePath = context.script.locationId,
-              location = scriptAnnotation.location?.locationInText,
+    val environment = getEnvironment(context)
+
+    // Process @Rules annotation, disabling import if env var is false
+    // Note: If editing this envar
+    val disableImports = environment.getOrDefault("disableImports", false) == true
+    if (!disableImports) {
+      annotations.filterByAnnotationType<ImportDirectory>().forEach { scriptAnnotation ->
+        scriptAnnotation.annotation.paths.forEach { rulePathDirectory ->
+          val dir = scriptBaseDir?.resolve(rulePathDirectory) ?: File(rulePathDirectory).normalize()
+          if (dir.exists()) {
+            dir
+              .listFiles { _, name -> name.endsWith(".df.kts") }
+              ?.forEach { ruleFile ->
+                val prevImport =
+                  importedSources.put(
+                    ruleFile.absolutePath,
+                    ruleFile to "${dir.resolve(ruleFile.name)}",
+                  )
+                if (prevImport != null) {
+                  diagnostics.add(
+                    ScriptDiagnostic(
+                      ScriptDiagnostic.unspecifiedError,
+                      "Duplicate rule imports: \"${prevImport.second}\" and \"${dir.resolve(ruleFile.name)}\"",
+                      sourcePath = context.script.locationId,
+                      location = scriptAnnotation.location?.locationInText,
+                    )
+                  )
+                  hasImportErrors = true
+                }
+              }
+          } else {
+            diagnostics.add(
+              ScriptDiagnostic(
+                ScriptDiagnostic.unspecifiedError,
+                "Rules path does not exists @ ${dir.path}",
+                sourcePath = context.script.locationId,
+                location = scriptAnnotation.location?.locationInText,
+              )
             )
-          )
-          hasImportErrors = true
+            hasImportErrors = true
+          }
+        }
+      }
+
+      // Process @Import annotation
+      annotations.filterByAnnotationType<Import>().forEach { scriptAnnotation ->
+        scriptAnnotation.annotation.paths.forEach { sourceName ->
+          val file = (scriptBaseDir?.resolve(sourceName) ?: File(sourceName)).normalize()
+          val keyPath = file.absolutePath
+          val prevImport = importedSources.put(keyPath, file to sourceName)
+          if (prevImport != null) {
+            diagnostics.add(
+              ScriptDiagnostic(
+                ScriptDiagnostic.unspecifiedError,
+                "Duplicate imports: \"${prevImport.second}\" and \"$sourceName\"",
+                sourcePath = context.script.locationId,
+                location = scriptAnnotation.location?.locationInText,
+              )
+            )
+            hasImportErrors = true
+          }
         }
       }
     }
+
     if (hasImportErrors) return ResultWithDiagnostics.Failure(diagnostics)
 
     val compileOptions =
@@ -150,6 +201,24 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
         }
         .asSuccess()
     }
+  }
+
+  /**
+   * This method is very hacky since we can't seem to access the actual Key classes for both
+   * `hostConfiguration` and `getEnvironment` so we have to do some name checking and casting to
+   * make it possible to fetch script host environment variables
+   */
+  @Suppress("UNCHECKED_CAST")
+  private fun getEnvironment(context: ScriptConfigurationRefinementContext): Map<String, Any?> {
+    val hostConfiguration =
+      context.compilationConfiguration.entries().find { it.key.name == "hostConfiguration" }?.value
+        as? ScriptingHostConfiguration
+
+    val getEnvironment =
+      hostConfiguration?.entries()?.find { it.key.name == "getEnvironment" }?.value
+        as? () -> Map<String, Any?>
+
+    return getEnvironment?.invoke() ?: emptyMap()
   }
 
   private companion object {

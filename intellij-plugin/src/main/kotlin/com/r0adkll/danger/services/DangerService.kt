@@ -93,7 +93,9 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
         templateClasspath = listOf(config.classPath),
         baseHostConfiguration =
           ScriptingHostConfiguration(defaultJvmScriptingHostConfiguration) {
-            getEnvironment { mapOf("projectRoot" to (project.basePath)?.let(::File)) }
+            getEnvironment {
+              mapOf("projectRoot" to (project.basePath)?.let(::File), "disableImports" to true)
+            }
           },
       )
       .firstOrNull()
