@@ -157,6 +157,6 @@ abstract class DangerPlugin {
       registeredContext
         ?: throw NullPointerException(
           "DangerContext is null! Have you registered this plugin in your Dangerfile e.g. " +
-            "'register plugin ${this::class.simpleName}'?"
+            "'Danger register ${this::class.simpleName}'?"
         )
 }

@@ -34,8 +34,11 @@ package systems.danger.kts.annotations
  * into the IDE by the IntelliJ plugin as doing so breaks custom script handling. See
  * [https://youtrack.jetbrains.com/issue/KTIJ-16352](https://youtrack.jetbrains.com/issue/KTIJ-16352)
  * for more details.
+ *
+ * @param paths the list of directories to import
+ * @param excludes a list of file name exceptions to NOT import
  */
 @Target(AnnotationTarget.FILE)
 @Repeatable
 @Retention(AnnotationRetention.SOURCE)
-annotation class ImportDirectory(vararg val paths: String)
+annotation class ImportDirectory(vararg val paths: String, val excludes: Array<String> = [])
