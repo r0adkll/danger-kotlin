@@ -8,6 +8,7 @@ import systems.danger.kotlin.sdk.DangerPlugin
  * within [DangerContext]
  */
 object Danger {
+  private var context: DangerContext? = null
   private val plugins = mutableMapOf<String, DangerPlugin>()
 
   /**
@@ -26,6 +27,9 @@ object Danger {
    */
   infix fun register(plugin: DangerPlugin) {
     checkNotRegistered(plugin)
+
+    // If the DangerContext has already been installed, apply to all new plugins
+    context?.let { plugin.registeredContext = it }
     plugins[plugin.id] = plugin
   }
 
@@ -43,6 +47,8 @@ object Danger {
    *   Danger instance.
    */
   internal fun installContext(context: DangerContext) {
+    this.context = context
+
     plugins.values.forEach { it.registeredContext = context }
   }
 }

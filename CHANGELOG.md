@@ -11,6 +11,7 @@
 
 -->
 ## Unreleased
+- Fix an edgecase where DangerContext can be installed before plugins are registered
 
 # 2.0.5
 - Refactoring how the `danger-kotlin-sdk` integrates with the main library
