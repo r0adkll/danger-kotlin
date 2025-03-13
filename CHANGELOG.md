@@ -12,6 +12,8 @@
 -->
 ## Unreleased
 - Fix an edgecase where DangerContext can be installed before plugins are registered
+- Added `DangerContext` as part of the receiver context for both `danger()` and `rule()` blocks.
+- Added `ENABLE_DANGER_MAVEN_PROXY` envar check to proxy filter for an additional way to enable the proxy filter.
 
 # 2.0.5
 - Refactoring how the `danger-kotlin-sdk` integrates with the main library

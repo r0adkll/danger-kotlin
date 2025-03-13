@@ -14,7 +14,10 @@ import kotlin.script.experimental.dependencies.Repository
 object RepositoryHttpProxyFilter {
 
   fun filterRepository(annotation: Repository): Repository {
-    val httpProxy = System.getenv("http_proxy") ?: System.getenv("HTTP_PROXY")
+    val httpProxy =
+      System.getenv("http_proxy")
+        ?: System.getenv("HTTP_PROXY")
+        ?: System.getenv("ENABLE_DANGER_MAVEN_PROXY")
     if (httpProxy != null && annotation.repositoriesCoordinates.any { it.startsWith("https") }) {
       // We have entered a maven repository targeting https, but have a http proxy enabled
       // swap the scheme out so that the dependencies can resolve while under a proxy
