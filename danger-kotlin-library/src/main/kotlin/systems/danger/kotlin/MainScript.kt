@@ -51,23 +51,18 @@ fun createOrReturnDangerDSL(args: Array<String>): DangerDSLContext {
     dangerRunner = MainDangerRunner(jsonInputFilePath, jsonOutputPath)
   }
 
-  return DangerDSLContext(
-    dsl = dangerRunner!!.danger,
-    context = dangerRunner!!,
-  )
+  return DangerDSLContext(dsl = dangerRunner!!.danger, context = dangerRunner!!)
 }
 
 /**
- * This is a temporary solution to provide both [DangerDSL] and [DangerContext] as
- * receiver contexts to the [danger] call.
+ * This is a temporary solution to provide both [DangerDSL] and [DangerContext] as receiver contexts
+ * to the [danger] call.
  *
- * In a future release the DSL/Context will be merged and migrated to the SDK to provide expanded capabilities
- * as well as simplifying the implementation here.
+ * In a future release the DSL/Context will be merged and migrated to the SDK to provide expanded
+ * capabilities as well as simplifying the implementation here.
  */
-class DangerDSLContext(
-  dsl: DangerDSL,
-  context: DangerContext,
-) : DangerDSL by dsl, DangerContext by context
+class DangerDSLContext(dsl: DangerDSL, context: DangerContext) :
+  DangerDSL by dsl, DangerContext by context
 
 /**
  * Adds an inline message message to the Danger report

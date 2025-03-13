@@ -1,6 +1,5 @@
 package systems.danger.kotlin.sdk
 
-
 /**
  * Describe the Sdk, contains:
  * - [Sdk.API_VERSION]
@@ -10,4 +9,3 @@ package systems.danger.kotlin.sdk
 object Sdk {
   const val API_VERSION = 3
 }
-
