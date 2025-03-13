@@ -2,6 +2,7 @@ package systems.danger.kotlin
 
 import systems.danger.kotlin.models.danger.DangerDSL
 import systems.danger.kotlin.models.git.FilePath
+import systems.danger.kotlin.sdk.DangerContext
 import systems.danger.kotlin.sdk.Violation
 
 internal var dangerRunner: MainDangerRunner? = null
@@ -28,7 +29,7 @@ internal val runnerInstance: MainDangerRunner
  * @param block the [DangerDSL] block
  * @receiver the [DangerDSL] descriptor
  */
-inline fun danger(args: Array<String>, block: DangerDSL.() -> Unit) =
+inline fun danger(args: Array<String>, block: DangerDSLContext.() -> Unit) =
   createOrReturnDangerDSL(args).run(block)
 
 /**
@@ -40,7 +41,7 @@ inline fun danger(args: Array<String>, block: DangerDSL.() -> Unit) =
  * @param args
  * @return a new [DangerDSL] descriptor
  */
-fun createOrReturnDangerDSL(args: Array<String>): DangerDSL {
+fun createOrReturnDangerDSL(args: Array<String>): DangerDSLContext {
   if (dangerRunner == null) {
     val argsCount = args.count()
 
@@ -50,8 +51,23 @@ fun createOrReturnDangerDSL(args: Array<String>): DangerDSL {
     dangerRunner = MainDangerRunner(jsonInputFilePath, jsonOutputPath)
   }
 
-  return dangerRunner!!.danger
+  return DangerDSLContext(
+    dsl = dangerRunner!!.danger,
+    context = dangerRunner!!,
+  )
 }
+
+/**
+ * This is a temporary solution to provide both [DangerDSL] and [DangerContext] as
+ * receiver contexts to the [danger] call.
+ *
+ * In a future release the DSL/Context will be merged and migrated to the SDK to provide expanded capabilities
+ * as well as simplifying the implementation here.
+ */
+class DangerDSLContext(
+  dsl: DangerDSL,
+  context: DangerContext,
+) : DangerDSL by dsl, DangerContext by context
 
 /**
  * Adds an inline message message to the Danger report

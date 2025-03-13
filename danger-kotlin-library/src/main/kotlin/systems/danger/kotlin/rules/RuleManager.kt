@@ -2,6 +2,7 @@ package systems.danger.kotlin.rules
 
 import kotlinx.coroutines.runBlocking
 import systems.danger.kotlin.models.danger.DangerDSL
+import systems.danger.kotlin.runnerInstance
 import systems.danger.kotlin.warn
 
 object RuleManager {
@@ -23,7 +24,13 @@ object RuleManager {
       if (debug) {
         println("Evaluating Rule[${vertex.ruleId}]")
       }
-      val result = rules[vertex.ruleId]?.run?.invoke(RuleContext(dangerDSL, this@runBlocking))
+      val result = rules[vertex.ruleId]?.run?.invoke(
+        RuleContext(
+          danger = dangerDSL,
+          dangerContext = runnerInstance,
+          scope = this@runBlocking,
+        ),
+      )
       if (result == RuleResult.Exit) {
         if (debug) {
           warn("Rule[${vertex.ruleId}] exited early. No more rules will be run in this session.")
