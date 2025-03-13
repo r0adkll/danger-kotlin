@@ -2,9 +2,15 @@ package systems.danger.kotlin.rules
 
 import kotlinx.coroutines.CoroutineScope
 import systems.danger.kotlin.models.danger.DangerDSL
+import systems.danger.kotlin.sdk.DangerContext
 
-class RuleContext(private val danger: DangerDSL, private val scope: CoroutineScope) :
-  DangerDSL by danger, CoroutineScope by scope
+class RuleContext(
+  private val danger: DangerDSL,
+  private val dangerContext: DangerContext,
+  private val scope: CoroutineScope,
+) : DangerDSL by danger,
+  DangerContext by dangerContext,
+  CoroutineScope by scope
 
 internal class Rule(
   val id: String,
