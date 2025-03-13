@@ -40,6 +40,12 @@ jobs:
       - name: Install Danger Kotlin
         run: sudo make install
 
+      - name: Upload danger-kotlin.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: danger-kotlin.jar
+          path: danger-kotlin-library/build/libs/danger-kotlin.jar
+
       - name: Run tests
         run: sudo ./gradlew danger-kotlin-library:test
 

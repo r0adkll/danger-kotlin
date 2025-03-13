@@ -72,11 +72,11 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
   private val resolver = CompoundDependenciesResolver(resolvers)
 
   override operator fun invoke(
-    context: ScriptConfigurationRefinementContext
+    context: ScriptConfigurationRefinementContext,
   ): ResultWithDiagnostics<ScriptCompilationConfiguration> = processAnnotations(context)
 
   private fun processAnnotations(
-    context: ScriptConfigurationRefinementContext
+    context: ScriptConfigurationRefinementContext,
   ): ResultWithDiagnostics<ScriptCompilationConfiguration> {
     val diagnostics = arrayListOf<ScriptDiagnostic>()
 
@@ -92,9 +92,21 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
           mapLegacyDiagnosticSeverity(severity),
           context.script.locationId,
           mapLegacyScriptPosition(position),
-        )
+        ),
       )
     }
+
+    // Before we attempt to resolve ANY dependencies, lets set some system props to disable all
+    // apache/maven logging
+    System.setProperty("log4j.rootLogger", "OFF")
+    System.setProperty(
+      "org.apache.commons.logging.simplelog.log.org.apache.http.client.protocol.ResponseProcessCookies",
+      "FATAL",
+    )
+    System.setProperty(
+      "org.apache.commons.logging.simplelog.log.org.jetbrains.kotlin.org.apache.http.client.protocol.ResponseProcessCookies",
+      "FATAL",
+    )
 
     val annotations =
       context.collectedData?.get(ScriptCollectedData.collectedAnnotations)?.takeIf {
@@ -129,7 +141,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
                       "Duplicate rule imports: \"${prevImport.second}\" and \"${dir.resolve(ruleFile.name)}\"",
                       sourcePath = context.script.locationId,
                       location = scriptAnnotation.location?.locationInText,
-                    )
+                    ),
                   )
                   hasImportErrors = true
                 }
@@ -141,7 +153,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
                 "Rules path does not exists @ ${dir.path}",
                 sourcePath = context.script.locationId,
                 location = scriptAnnotation.location?.locationInText,
-              )
+              ),
             )
             hasImportErrors = true
           }
@@ -161,7 +173,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
                 "Duplicate imports: \"${prevImport.second}\" and \"$sourceName\"",
                 sourcePath = context.script.locationId,
                 location = scriptAnnotation.location?.locationInText,
-              )
+              ),
             )
             hasImportErrors = true
           }
@@ -193,7 +205,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
                 } else {
                   it
                 }
-              }
+              },
           )
         }
       } catch (e: Throwable) {
@@ -203,14 +215,14 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
 
     return resolveResult.onSuccess { resolvedClassPath ->
       ScriptCompilationConfiguration(context.compilationConfiguration) {
-          updateClasspath(resolvedClassPath)
-          if (importedSources.isNotEmpty()) {
-            importScripts.append(importedSources.values.map { FileScriptSource(it.first) })
-          }
-          if (compileOptions.isNotEmpty()) {
-            compilerOptions.append(compileOptions)
-          }
+        updateClasspath(resolvedClassPath)
+        if (importedSources.isNotEmpty()) {
+          importScripts.append(importedSources.values.map { FileScriptSource(it.first) })
         }
+        if (compileOptions.isNotEmpty()) {
+          compilerOptions.append(compileOptions)
+        }
+      }
         .asSuccess()
     }
   }
@@ -236,11 +248,11 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
   private companion object {
     val DANGER_DEFAULT_FLAT_DIRS =
       setOf(
-          "/usr/local", // x86 location
-          "/opt/local", // Arm
-          "/opt/homebrew", // Homebrew Arm
-          "/usr", // Fallback
-        )
+        "/usr/local", // x86 location
+        "/opt/local", // Arm
+        "/opt/homebrew", // Homebrew Arm
+        "/usr", // Fallback
+      )
         .map { "$it/lib/danger/libs" }
   }
 }
