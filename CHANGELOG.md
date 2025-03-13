@@ -11,7 +11,9 @@
 
 -->
 ## Unreleased
-- Fix an edgecase where DangerContext can be installed before plugins are registered
+
+# 2.0.6
+- Fix an edge case where DangerContext can be installed before plugins are registered
 - Added `DangerContext` as part of the receiver context for both `danger()` and `rule()` blocks.
 - Added `ENABLE_DANGER_MAVEN_PROXY` envar check to proxy filter for an additional way to enable the proxy filter.
 
