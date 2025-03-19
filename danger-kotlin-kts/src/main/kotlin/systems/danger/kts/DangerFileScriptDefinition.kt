@@ -96,19 +96,6 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
       )
     }
 
-    // Before we attempt to resolve ANY dependencies, lets set some system props to disable all
-    // apache/maven logging
-    System.setProperty("log4j.rootLogger", "OFF")
-    System.setProperty(
-      "org.apache.commons.logging.simplelog.log.org.apache.http.client.protocol.ResponseProcessCookies",
-      "FATAL",
-    )
-    System.setProperty(
-      "org.apache.commons.logging.simplelog.log.org.jetbrains.kotlin.org.apache.http.client.protocol.ResponseProcessCookies",
-      "FATAL",
-    )
-    System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off")
-
     val annotations =
       context.collectedData?.get(ScriptCollectedData.collectedAnnotations)?.takeIf {
         it.isNotEmpty()
