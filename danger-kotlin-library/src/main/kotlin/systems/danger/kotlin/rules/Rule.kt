@@ -8,9 +8,7 @@ class RuleContext(
   private val danger: DangerDSL,
   private val dangerContext: DangerContext,
   private val scope: CoroutineScope,
-) : DangerDSL by danger,
-  DangerContext by dangerContext,
-  CoroutineScope by scope
+) : DangerDSL by danger, DangerContext by dangerContext, CoroutineScope by scope
 
 internal class Rule(
   val id: String,
