@@ -40,6 +40,12 @@ jobs:
       - name: Install Danger Kotlin
         run: sudo make install
 
+      - name: Pull PR labels
+        run: |
+          echo "::set-output name=labels::$(gh api --jq '.labels.[].name' /repos/{owner}/{repo}/pulls/${{ github.event.number }})\n"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload danger-kotlin.jar
         uses: actions/upload-artifact@v4
         if: ${{ matrix.os == 'ubuntu-latest' }}
