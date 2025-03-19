@@ -107,10 +107,7 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
       "org.apache.commons.logging.simplelog.log.org.jetbrains.kotlin.org.apache.http.client.protocol.ResponseProcessCookies",
       "FATAL",
     )
-    System.setProperty(
-      "org.slf4j.simpleLogger.defaultLogLevel",
-      "off"
-    )
+    System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off")
 
     val annotations =
       context.collectedData?.get(ScriptCollectedData.collectedAnnotations)?.takeIf {
