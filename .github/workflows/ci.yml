@@ -40,15 +40,17 @@ jobs:
       - name: Install Danger Kotlin
         run: sudo make install
 
-      - name: Pull PR labels
+      - name: Check if upload jar label applied to PR
+        id: upload-jar-check
         run: |
-          echo "::set-output name=labels::$(gh api --jq '.labels.[].name' /repos/{owner}/{repo}/pulls/${{ github.event.number }})\n"
+          gh api --jq '.labels.[].name' /repos/{owner}/{repo}/pulls/${{ github.event.number }} | grep -q "Upload Jar" \
+            && echo "UPLOAD_JAR=true" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload danger-kotlin.jar
         uses: actions/upload-artifact@v4
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ steps.upload-jar-check.outputs.UPLOAD_JAR }}
         with:
           name: danger-kotlin.jar
           path: danger-kotlin-library/build/libs/danger-kotlin.jar
