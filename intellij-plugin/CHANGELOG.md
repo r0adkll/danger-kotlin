@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [2.0.7]
+
+### Changed
+
+- Updated to match underlying library.
+
 ## [2.0.6]
 
 ### Changed

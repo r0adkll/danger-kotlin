@@ -12,6 +12,9 @@
 -->
 ## Unreleased
 
+# 2.0.7
+- Disable SLF4J logging during dependency resolution
+
 # 2.0.6
 - Fix an edge case where DangerContext can be installed before plugins are registered
 - Added `DangerContext` as part of the receiver context for both `danger()` and `rule()` blocks.
