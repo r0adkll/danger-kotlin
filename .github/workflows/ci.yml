@@ -43,8 +43,12 @@ jobs:
       - name: Check if upload jar label applied to PR
         id: upload-jar-check
         run: |
-          gh api --jq '.labels.[].name' /repos/{owner}/{repo}/pulls/${{ github.event.number }} | grep -q "Upload Jar" \
-            && echo "UPLOAD_JAR=true" >> "$GITHUB_OUTPUT"
+          if gh api --jq '.labels.[].name' /repos/{owner}/{repo}/pulls/${{ github.event.number }} | grep -q "Upload Jar"
+          then
+            echo "UPLOAD_JAR=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "UPLOAD_JAR=false" >> "$GITHUB_OUTPUT"
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
