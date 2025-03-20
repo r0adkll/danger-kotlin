@@ -171,7 +171,7 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
   }
 }
 
-private const val DANGER_PROJECT_DIR = ".danger"
+internal const val DANGER_PROJECT_DIR = ".danger"
 private const val DANGER_SOURCE_DIR = "dist"
 private const val DANGER_SOURCE_JAR_NAME = "danger-kotlin.jar"
 
