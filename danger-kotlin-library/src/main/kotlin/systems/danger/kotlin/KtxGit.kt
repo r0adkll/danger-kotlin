@@ -1,5 +1,6 @@
 package systems.danger.kotlin
 
+import systems.danger.kotlin.models.git.FilePath
 import systems.danger.kotlin.models.git.Git
 import systems.danger.kotlin.models.git.GitCommit
 import systems.danger.kotlin.tools.shell.ShellExecutorFactory
@@ -25,6 +26,35 @@ val Git.changedLines: PullRequestChangedLines
     val commandRawDiffOutput = shellExecutor.execute("git diff $baseSha $headSha")
     return PullRequestChangedLines(additions, deletions, commandRawDiffOutput)
   }
+
+/**
+ * The changed lines for a specific file in this pr
+ * @param filePath the path to the file
+ * @return the Diff for the file at [filePath]
+ */
+fun Git.diffForFile(filePath: FilePath): DiffForFile {
+  if (headSha == null || baseSha == null) return DiffForFile(filePath)
+  val shellExecutor = ShellExecutorFactory.get()
+  val rawDiffOutput = shellExecutor.execute("git diff $baseSha $headSha -- $filePath")
+
+  val additions = mutableListOf<String>()
+  val deletions = mutableListOf<String>()
+
+  var hasSeenChunkHeader = false
+  for (line in rawDiffOutput.lines()) {
+    if (line.startsWith("@@")) {
+      hasSeenChunkHeader = true
+    } else if (hasSeenChunkHeader) {
+      if (line.startsWith("+")) {
+        additions += line
+      } else if (line.startsWith("-")) {
+        deletions += line
+      }
+    }
+  }
+
+  return DiffForFile(filePath, additions, deletions)
+}
 
 /** Number of changed lines */
 val Git.linesOfCode: Int
@@ -62,6 +92,19 @@ data class PullRequestChangedLines(
   val additions: Int,
   val deletions: Int,
   val diff: String? = null,
+)
+
+/**
+ * Wrapper for added and deleted lines in the diff of a specific file
+ *
+ * @param file the file the diff is for
+ * @param additions the lines added in this diff
+ * @param deletions the lines deleted in this diff
+ */
+data class DiffForFile(
+  val file: FilePath,
+  val additions: List<String> = emptyList(),
+  val deletions: List<String> = emptyList(),
 )
 
 private fun List<GitCommit>.sortChronologically(): List<GitCommit> {
