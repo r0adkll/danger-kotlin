@@ -11,6 +11,7 @@
 
 -->
 ## Unreleased
+- Added extension function on `Git` to get the diff lines of a specific file
 
 # 2.0.7
 - Disable SLF4J logging during dependency resolution
