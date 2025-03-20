@@ -12,6 +12,7 @@
 -->
 ## Unreleased
 - Added extension function on `Git` to get the diff lines of a specific file
+- Fixed caching bug when running a Dangerfile inside the IDE via the plugin
 
 # 2.0.7
 - Disable SLF4J logging during dependency resolution

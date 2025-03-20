@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.toNioPathOrNull
 import com.r0adkll.danger.Command
 import com.r0adkll.danger.CommandOption
+import com.r0adkll.danger.cache.cacheBuilder
 import com.r0adkll.danger.services.CiProviderFactory
 import kotlinx.coroutines.runBlocking
 
@@ -36,11 +37,22 @@ class DangerRunCommandLineBuilder(private val project: Project) {
       withWorkingDirectory(project.basePath?.toNioPathOrNull())
 
       // This should attempt to hydrate this run configuration with the GH token
-      // automatically, if the Github integration has an account.
+      // automatically, if the GitHub integration has an account.
       val ciEnv = runBlocking {
-        CiProviderFactory.getInstance(project).provideAvailableService().runEnvironment()
+        CiProviderFactory.getInstance(project)
+          .provideAvailableService()
+          .runEnvironment()
       }
       withEnvironment(ciEnv)
+
+      // Set up the caching environment for the run
+      // This will hash the Dangerfile and any file imported into that file
+      // and configure the envar used by kotlinc/main.kts to cache the compilation
+      // Without this workaround, it will never report cache-miss for any changes not
+      // in the main dangerfile
+      project.cacheBuilder()
+        .buildEnvironment(dangerFilePath)
+        .let(::withEnvironment)
     }
   }
 
