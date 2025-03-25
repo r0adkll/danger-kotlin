@@ -12,6 +12,9 @@
   "addLabels": [
     "renovate"
   ],
+  "ignoreDeps": [
+    "io.strikt:strikt-core"
+  ],
   "packageRules": [
     {
       "groupName": "Kotlin, KSP and Compose Compiler",
