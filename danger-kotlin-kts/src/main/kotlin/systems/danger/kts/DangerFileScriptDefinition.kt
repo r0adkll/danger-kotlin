@@ -180,7 +180,8 @@ class DangerFileKtsConfigurator : RefineScriptCompilationConfigurationHandler {
       try {
         // Before we attempt to resolve ANY dependencies, let's disable logging so that the
         // Maven fetcher doesn't accidentally log information we don't want in some proxy scenarios
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off")
+        // TODO: DO NOT MERGE
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
         @Suppress("DEPRECATION_ERROR")
         internalScriptingRunSuspend {
