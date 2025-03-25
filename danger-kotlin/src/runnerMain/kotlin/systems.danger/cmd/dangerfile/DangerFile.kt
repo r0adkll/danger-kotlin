@@ -42,6 +42,8 @@ object DangerFile : DangerFileBridge {
 
     exec("kotlinc") {
       arguments(
+        "-jvm-target",
+        "17",
         "-script-templates",
         "systems.danger.kts.DangerFileScript",
         "-cp",
