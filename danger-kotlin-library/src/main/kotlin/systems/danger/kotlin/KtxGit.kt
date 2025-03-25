@@ -29,6 +29,7 @@ val Git.changedLines: PullRequestChangedLines
 
 /**
  * The changed lines for a specific file in this pr
+ *
  * @param filePath the path to the file
  * @return the Diff for the file at [filePath]
  */

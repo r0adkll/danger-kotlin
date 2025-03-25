@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   kotlin("jvm")
@@ -17,8 +16,4 @@ dependencies {
 
 tasks.named<ShadowJar>("shadowJar") { archiveBaseName = "danger-kotlin-kts" }
 
-kotlin {
-  compilerOptions {
-    jvmToolchain(17)
-  }
-}
+kotlin { compilerOptions { jvmToolchain(17) } }
