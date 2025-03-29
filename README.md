@@ -25,13 +25,13 @@ Version](https://img.shields.io/badge/r0adkll/danger%20kotlin-v2.0.4-orange)](ht
 **Mac - Apple Silicon**
 
 ```shell
-homebrew install r0adkll/tap/danger-kotlin
+brew install r0adkll/tap/danger-kotlin
 ```
 
 **Mac - Intel**
 
 ```shell
-homebrew install r0adkll/tap/danger-kotlin-intel
+brew install r0adkll/tap/danger-kotlin-intel
 ```
 
 **Linux**
