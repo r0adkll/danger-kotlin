@@ -19,8 +19,6 @@ object DefaultGithubClientFactory : GithubClientFactory {
   private const val DEFAULT_GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
   override fun create(): GitHubClient {
-    System.getenv()
-
     return GitHubClient.create(getBaseUrl(), getGraphqlUrl(), getToken())
   }
 
