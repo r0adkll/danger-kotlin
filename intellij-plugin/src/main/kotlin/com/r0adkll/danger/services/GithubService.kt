@@ -122,6 +122,7 @@ class GithubService(private val project: Project) : CiProvider {
         "DANGER_GITHUB_API_TOKEN" to token,
         "DANGER_GITHUB_HOST" to ghAccount.server.toUrl(),
         "DANGER_GITHUB_API_BASE_URL" to ghAccount.server.toApiUrl(),
+        "DANGER_GITHUB_GRAPHQL_BASE_URL" to ghAccount.server.toGraphQLUrl(),
         "CI_PROVIDER" to "Github",
       )
     }

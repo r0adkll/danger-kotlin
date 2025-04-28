@@ -27,6 +27,7 @@ GitHub host/api urls and token, i.e.
 ```
 DANGER_GITHUB_API_TOKEN
 DANGER_GITHUB_API_BASE_URL
+DANGER_GITHUB_GRAPHQL_BASE_URL
 ```
 
 Here is an example of how this looks:
