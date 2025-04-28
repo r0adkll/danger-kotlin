@@ -39,9 +39,7 @@ class DangerRunCommandLineBuilder(private val project: Project) {
       // This should attempt to hydrate this run configuration with the GH token
       // automatically, if the GitHub integration has an account.
       val ciEnv = runBlocking {
-        CiProviderFactory.getInstance(project)
-          .provideAvailableService()
-          .runEnvironment()
+        CiProviderFactory.getInstance(project).provideAvailableService().runEnvironment()
       }
       withEnvironment(ciEnv)
 
@@ -50,9 +48,7 @@ class DangerRunCommandLineBuilder(private val project: Project) {
       // and configure the envar used by kotlinc/main.kts to cache the compilation
       // Without this workaround, it will never report cache-miss for any changes not
       // in the main dangerfile
-      project.cacheBuilder()
-        .buildEnvironment(dangerFilePath)
-        .let(::withEnvironment)
+      project.cacheBuilder().buildEnvironment(dangerFilePath).let(::withEnvironment)
     }
   }
 
