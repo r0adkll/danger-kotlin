@@ -2,8 +2,8 @@
 /*
  * Use external dependencies using the following annotations:
  */
-@file:Repository("https://repo.maven.apache.org/maven2/")
-@file:DependsOn("org.apache.commons:commons-text:1.6")
+//@file:Repository("https://repo.maven.apache.org/maven2/")
+@file:DependsOn("org.apache.commons:commons-text:1.13.1")
 
 // Testing plugin
 @file:DependsOn("danger-kotlin-sample-plugin-sample.jar")
