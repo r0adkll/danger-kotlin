@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Kotlin
         run: |
-          curl -o kotlin-compiler.zip -L https://github.com/JetBrains/kotlin/releases/download/v2.1.10/kotlin-compiler-2.1.10.zip
+          curl -o kotlin-compiler.zip -L https://github.com/JetBrains/kotlin/releases/download/v2.1.20/kotlin-compiler-2.1.20.zip
 
           if [[ "$OSTYPE" != "darwin"* ]]
           then
