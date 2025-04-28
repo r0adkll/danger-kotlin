@@ -16,11 +16,12 @@ interface GithubClientFactory {
 object DefaultGithubClientFactory : GithubClientFactory {
 
   private const val DEFAULT_GITHUB_URL = "https://api.github.com"
+  private const val DEFAULT_GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
   override fun create(): GitHubClient {
     System.getenv()
 
-    return GitHubClient.create(getBaseUrl(), getToken())
+    return GitHubClient.create(getBaseUrl(), getGraphqlUrl(), getToken())
   }
 
   private fun getToken(): String {
@@ -33,5 +34,9 @@ object DefaultGithubClientFactory : GithubClientFactory {
 
   private fun getBaseUrl(): URI {
     return URI.create(System.getenv("DANGER_GITHUB_API_BASE_URL") ?: DEFAULT_GITHUB_URL)
+  }
+
+  private fun getGraphqlUrl(): URI {
+    return URI.create(System.getenv("DANGER_GITHUB_GRAPHQL_BASE_URL") ?: DEFAULT_GITHUB_GRAPHQL_URL)
   }
 }
