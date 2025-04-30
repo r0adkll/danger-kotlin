@@ -13,18 +13,16 @@ import kotlin.io.path.*
 fun Project.cacheBuilder() = service<CacheBuilder>()
 
 @Service(Service.Level.PROJECT)
-class CacheBuilder(
-  private val project: Project,
-) {
+class CacheBuilder(private val project: Project) {
 
   fun buildEnvironment(dangerFile: String): Map<String, String> {
     val dangerFilePath = Path.of(dangerFile)
 
     return getDangerCacheBasePath()
       ?.let { parentDir ->
-        computeDangerFileChecksum(dangerFilePath)
-          ?.let { checksum -> parentDir.resolve(checksum) }
-      }?.let { cacheDir ->
+        computeDangerFileChecksum(dangerFilePath)?.let { checksum -> parentDir.resolve(checksum) }
+      }
+      ?.let { cacheDir ->
         // Make sure this exists
         cacheDir.createDirectories()
         mapOf(KSCRIPT_CACHE_ENV_VAR to cacheDir.absolutePathString())
@@ -39,12 +37,9 @@ class CacheBuilder(
       // Add danger file content to the hash
       DigestUtil.updateContentHash(digest, dangerFilePath, buffer)
 
-      dangerFilePath.readLines()
-        .mapNotNull {
-          ImportRegex.find(it)
-            ?.groupValues
-            ?.getOrNull(2)
-        }
+      dangerFilePath
+        .readLines()
+        .mapNotNull { ImportRegex.find(it)?.groupValues?.getOrNull(2) }
         .map { dangerFilePath.parent.resolve(it) }
         .filter { it.exists() }
         .sorted()
@@ -66,9 +61,7 @@ class CacheBuilder(
     return null
   }
 
-  /**
-   * This returns the base cache directory to use when running Danger via this plugin
-   */
+  /** This returns the base cache directory to use when running Danger via this plugin */
   private fun getDangerCacheBasePath(): Path? {
     return project.basePath
       ?.toNioPathOrNull()

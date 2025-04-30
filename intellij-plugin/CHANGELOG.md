@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.0.8]
+
 ### Fixed
 
 - Fixed bug where kotlin would ignore `@Import*` scripts when caching and re-using executions of the main Dangerfile

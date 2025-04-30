@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+
+# 2.0.8
 - Added extension function on `Git` to get the diff lines of a specific file
 - Fixed caching bug when running a Dangerfile inside the IDE via the plugin
 
