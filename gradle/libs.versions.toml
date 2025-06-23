@@ -1,5 +1,5 @@
 [versions]
-buildconfig = "5.6.6"
+buildconfig = "5.6.7"
 changelog = "2.2.1"
 clikt = "5.0.3"
 dokka = "2.0.0"
