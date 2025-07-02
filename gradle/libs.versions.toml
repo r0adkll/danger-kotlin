@@ -16,7 +16,7 @@ ktor = "3.2.0"
 mavenPublish = "0.33.0"
 okio = "3.15.0"
 mockk = "1.14.4"
-shadow = "9.0.0-beta17"
+shadow = "9.0.0-rc1"
 spotless = "6.25.0"
 strikt = "0.34.0"
 
