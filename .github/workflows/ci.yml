@@ -53,7 +53,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload danger-kotlin.jar
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ steps.upload-jar-check.outputs.UPLOAD_JAR == true}}
         with:
           name: danger-kotlin.jar
