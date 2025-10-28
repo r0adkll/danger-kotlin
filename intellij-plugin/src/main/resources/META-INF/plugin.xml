@@ -29,7 +29,7 @@
   </extensions>
 
   <extensions defaultExtensionNs="org.jetbrains.kotlin">
-    <supportsKotlinPluginMode supportsK2="false"/>
+    <supportsKotlinPluginMode supportsK2="true"/>
     <scriptDefinitionsSource implementation="com.r0adkll.danger.DangerScriptDefinitionsSource"/>
   </extensions>
 </idea-plugin>
