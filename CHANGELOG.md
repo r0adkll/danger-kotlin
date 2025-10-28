@@ -11,6 +11,8 @@
 
 -->
 ## Unreleased
+
+# 2.1.0
 - Added support for K2 mode
 
 # 2.0.8
