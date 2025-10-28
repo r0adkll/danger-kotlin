@@ -27,10 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.kotlin.idea.base.plugin.KotlinPluginModeProvider
-import org.jetbrains.kotlin.idea.core.script.ScriptDefinitionsManager
-import org.jetbrains.kotlin.idea.core.script.k2.K2ScriptDefinitionProvider
+import org.jetbrains.kotlin.idea.core.script.k1.ScriptDefinitionsManager
+import org.jetbrains.kotlin.idea.core.script.k1.settings.KotlinScriptingSettingsImpl
 import org.jetbrains.kotlin.idea.core.script.loadDefinitionsFromTemplatesByPaths
-import org.jetbrains.kotlin.idea.core.script.settings.KotlinScriptingSettings
 import org.jetbrains.kotlin.scripting.definitions.ScriptDefinition
 import org.jetbrains.kotlin.scripting.definitions.getEnvironment
 
@@ -109,14 +108,12 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
   }
 
   private fun reloadScriptDefinitions() {
-    if (KotlinPluginModeProvider.isK2Mode()) {
-      K2ScriptDefinitionProvider.getInstance(project).reloadDefinitionsFromSources()
-    } else {
+    if (KotlinPluginModeProvider.isK1Mode()) {
       ScriptDefinitionsManager.getInstance(project).apply {
         reloadDefinitionsBy(DangerScriptDefinitionsSource(project))
 
         dangerScriptDefinition?.let { definition ->
-          KotlinScriptingSettings.getInstance(project).apply {
+          KotlinScriptingSettingsImpl.getInstance(project).apply {
             // Make sure the DF script def is first, or else it won't load
             setOrder(definition, -100)
 

@@ -35,9 +35,9 @@ dependencies {
   // IntelliJ Platform Gradle Plugin Dependencies Extension - read more:
   // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
   intellijPlatform {
-    // Narwhal 4 Feature Drop | 2025.1.4
+    // Otter | 2025.2.1 RC1
     // https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html#2025
-    androidStudio("2025.1.4.8")
+    androidStudio("2025.2.1.6")
 
     // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file
     // for bundled IntelliJ Platform plugins.
