@@ -35,9 +35,9 @@ dependencies {
   // IntelliJ Platform Gradle Plugin Dependencies Extension - read more:
   // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
   intellijPlatform {
-    // Meerkat | 2024.3.2
-    // https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html#2024
-    androidStudio("2024.3.1.13")
+    // Narwhal 4 Feature Drop | 2025.1.4
+    // https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html#2025
+    androidStudio("2025.1.4.8")
 
     // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file
     // for bundled IntelliJ Platform plugins.
@@ -134,9 +134,7 @@ tasks.register<Copy>("copyDangerJar") {
 tasks.named<Jar>("jar") { dependsOn("copyDangerJar") }
 
 tasks.named<RunIdeTask>("runIde") {
-  jvmArgumentProviders += CommandLineArgumentProvider {
-    listOf("-Didea.kotlin.plugin.use.k2=false")
-  }
+  jvmArgumentProviders += CommandLineArgumentProvider { listOf("-Didea.kotlin.plugin.use.k2=true") }
 }
 
 tasks { publishPlugin { dependsOn(patchChangelog) } }

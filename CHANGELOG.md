@@ -11,6 +11,7 @@
 
 -->
 ## Unreleased
+- Added support for K2 mode
 
 # 2.0.8
 - Added extension function on `Git` to get the diff lines of a specific file

@@ -26,7 +26,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.kotlin.idea.base.plugin.KotlinPluginModeProvider
 import org.jetbrains.kotlin.idea.core.script.ScriptDefinitionsManager
+import org.jetbrains.kotlin.idea.core.script.k2.K2ScriptDefinitionProvider
 import org.jetbrains.kotlin.idea.core.script.loadDefinitionsFromTemplatesByPaths
 import org.jetbrains.kotlin.idea.core.script.settings.KotlinScriptingSettings
 import org.jetbrains.kotlin.scripting.definitions.ScriptDefinition
@@ -99,24 +101,32 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
           },
       )
       .firstOrNull()
+      ?.apply {
+        // The file type for this is unique, so lets make sure the IDE orders it above .main.kts
+        // scripts.
+        order = -100
+      }
   }
 
-  // TODO: Update this to support k2 mode at some point in the future
   private fun reloadScriptDefinitions() {
-    ScriptDefinitionsManager.getInstance(project).apply {
-      reloadDefinitionsBy(DangerScriptDefinitionsSource(project))
+    if (KotlinPluginModeProvider.isK2Mode()) {
+      K2ScriptDefinitionProvider.getInstance(project).reloadDefinitionsFromSources()
+    } else {
+      ScriptDefinitionsManager.getInstance(project).apply {
+        reloadDefinitionsBy(DangerScriptDefinitionsSource(project))
 
-      dangerScriptDefinition?.let { definition ->
-        KotlinScriptingSettings.getInstance(project).apply {
-          // Make sure the DF script def is first, or else it won't load
-          setOrder(definition, -100)
+        dangerScriptDefinition?.let { definition ->
+          KotlinScriptingSettings.getInstance(project).apply {
+            // Make sure the DF script def is first, or else it won't load
+            setOrder(definition, -100)
 
-          // Make sure auto-reload is on to automatically react to changes
-          setAutoReloadConfigurations(definition, true)
+            // Make sure auto-reload is on to automatically react to changes
+            setAutoReloadConfigurations(definition, true)
+          }
         }
-      }
 
-      reorderDefinitions()
+        reorderDefinitions()
+      }
     }
   }
 
