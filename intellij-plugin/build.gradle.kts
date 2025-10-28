@@ -134,9 +134,7 @@ tasks.register<Copy>("copyDangerJar") {
 tasks.named<Jar>("jar") { dependsOn("copyDangerJar") }
 
 tasks.named<RunIdeTask>("runIde") {
-  jvmArgumentProviders += CommandLineArgumentProvider {
-    listOf("-Didea.kotlin.plugin.use.k2=true")
-  }
+  jvmArgumentProviders += CommandLineArgumentProvider { listOf("-Didea.kotlin.plugin.use.k2=true") }
 }
 
 tasks { publishPlugin { dependsOn(patchChangelog) } }

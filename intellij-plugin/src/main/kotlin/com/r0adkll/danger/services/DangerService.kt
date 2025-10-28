@@ -110,8 +110,7 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
 
   private fun reloadScriptDefinitions() {
     if (KotlinPluginModeProvider.isK2Mode()) {
-      K2ScriptDefinitionProvider.getInstance(project)
-        .reloadDefinitionsFromSources()
+      K2ScriptDefinitionProvider.getInstance(project).reloadDefinitionsFromSources()
     } else {
       ScriptDefinitionsManager.getInstance(project).apply {
         reloadDefinitionsBy(DangerScriptDefinitionsSource(project))
