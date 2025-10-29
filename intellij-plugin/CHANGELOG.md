@@ -9,6 +9,7 @@
 ### Added
 
 - Support for K2 mode
+- Removed support for K1 mode
 
 ## [2.0.8]
 
