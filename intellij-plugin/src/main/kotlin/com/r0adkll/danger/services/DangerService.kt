@@ -12,7 +12,6 @@ import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.getCanonicalPath
 import com.intellij.openapi.util.io.toNioPathOrNull
-import com.r0adkll.danger.DangerScriptDefinitionsSource
 import com.r0adkll.danger.settings.settings
 import java.io.File
 import java.nio.file.Path
@@ -26,9 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.kotlin.idea.base.plugin.KotlinPluginModeProvider
-import org.jetbrains.kotlin.idea.core.script.k1.ScriptDefinitionsManager
-import org.jetbrains.kotlin.idea.core.script.k1.settings.KotlinScriptingSettingsImpl
 import org.jetbrains.kotlin.idea.core.script.loadDefinitionsFromTemplatesByPaths
 import org.jetbrains.kotlin.scripting.definitions.ScriptDefinition
 import org.jetbrains.kotlin.scripting.definitions.getEnvironment
@@ -67,11 +63,9 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
       logger.info("danger-kotlin.jar found @ ${dangerKotlinJar.absolutePathString()}")
       dangerConfig = DangerConfig(dangerKotlinJar)
       dangerScriptDefinition = scriptDefinition(dangerConfig!!)
-      reloadScriptDefinitions()
     } else {
       logger.warn("danger-kotlin.jar could not be found in this project, copy from plugin")
       copyDangerJar(pluginVersion)
-      reloadScriptDefinitions()
     }
 
     // Now attempt to fetch the current installed danger version / locations
@@ -105,26 +99,6 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
         // scripts.
         order = -100
       }
-  }
-
-  private fun reloadScriptDefinitions() {
-    if (KotlinPluginModeProvider.isK1Mode()) {
-      ScriptDefinitionsManager.getInstance(project).apply {
-        reloadDefinitionsBy(DangerScriptDefinitionsSource(project))
-
-        dangerScriptDefinition?.let { definition ->
-          KotlinScriptingSettingsImpl.getInstance(project).apply {
-            // Make sure the DF script def is first, or else it won't load
-            setOrder(definition, -100)
-
-            // Make sure auto-reload is on to automatically react to changes
-            setAutoReloadConfigurations(definition, true)
-          }
-        }
-
-        reorderDefinitions()
-      }
-    }
   }
 
   private suspend fun copyDangerJar(version: String) =
