@@ -1,5 +1,10 @@
 # IntelliJ Plugin
 
+!!! note
+
+    From version `2.1.0` and onwards only K2 mode is supported. Due to breaking changes in the kotlin scripting APIs
+    between IntelliJ versions 251 and 252 K1 mode support was dropped. Please use version `2.0.8` and below for K1 support.
+
 This project provides an IDE plugin to automatically add the Danger kotlin script definition to your IDE so syntax highlighting and auto-complete work out of the box.
 The plugin will also detect the `danger(args) { … }` in your scripts and give you a gutter run action, ▶︎, that lets your test your Dangerfiles directly in the IDE.
 

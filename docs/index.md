@@ -10,19 +10,10 @@ This project is a middleware layer for [Danger][] that evaluates your Kotlin scr
 ## Installation
 
 <details open>
-<summary>Mac - Apple Silicon</summary>
+<summary>Mac</summary>
 
 ```shell
 homebrew install r0adkll/tap/danger-kotlin
-```
-
-</details>
-
-<details open>
-<summary>Mac - Intel</summary>
-
-```shell
-homebrew install r0adkll/tap/danger-kotlin-intel
 ```
 
 </details>
