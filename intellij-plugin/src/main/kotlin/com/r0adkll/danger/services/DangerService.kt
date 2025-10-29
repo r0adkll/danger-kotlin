@@ -47,8 +47,9 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
   suspend fun load() {
     // This should 1:1 match our danger-kotlin version for consistency
     val pluginVersion =
-      PluginManager.getInstance().findEnabledPlugin(PluginIdHelper.getId("com.r0adkll.danger"))?.version
-        ?: error("Unable to load this plugins version")
+      PluginManager.getInstance()
+        .findEnabledPlugin(PluginIdHelper.getId("com.r0adkll.danger"))
+        ?.version ?: error("Unable to load this plugins version")
 
     logger.info("Loading Danger for $pluginVersion")
 

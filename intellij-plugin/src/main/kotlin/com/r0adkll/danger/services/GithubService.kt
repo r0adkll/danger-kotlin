@@ -115,7 +115,9 @@ class GithubService(private val project: Project) : CiProvider {
   override suspend fun runEnvironment(): Map<String, String> =
     withContext(Dispatchers.IO) {
       val ghAccount = getMatchingGithubAccount() ?: return@withContext emptyMap()
-      val token = GHCompatibilityUtilHelper.getOrRequestToken(ghAccount, project) ?: return@withContext emptyMap()
+      val token =
+        GHCompatibilityUtilHelper.getOrRequestToken(ghAccount, project)
+          ?: return@withContext emptyMap()
 
       mapOf(
         "DANGER_GITHUB_API_TOKEN" to token,
