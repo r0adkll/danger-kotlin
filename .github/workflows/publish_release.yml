@@ -22,7 +22,7 @@ jobs:
         run: ./gradlew danger-kotlin-library:shadowJar
 
       - name: Upload Artifact lib
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: lib
           path: danger-kotlin-library/build/libs/danger-kotlin.jar
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download Artifact lib
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: lib
 
