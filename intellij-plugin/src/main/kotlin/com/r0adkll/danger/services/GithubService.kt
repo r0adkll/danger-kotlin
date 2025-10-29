@@ -4,6 +4,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
+import com.r0adkll.danger.util.GHCompatibilityUtilHelper
 import git4idea.GitBranch
 import git4idea.remote.hosting.GitHostingUrlUtil
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,6 @@ import org.jetbrains.plugins.github.api.GithubServerPath
 import org.jetbrains.plugins.github.api.data.GithubIssueState
 import org.jetbrains.plugins.github.authentication.GHAccountsUtil
 import org.jetbrains.plugins.github.authentication.accounts.GithubAccount
-import org.jetbrains.plugins.github.util.GHCompatibilityUtil
 import org.jetbrains.plugins.github.util.GithubUrlUtil
 
 fun Project.gitHubService(): GithubService = service()
@@ -79,7 +79,7 @@ class GithubService(private val project: Project) : CiProvider {
         headRef = "${repoCoordinates.repositoryPath.owner}:${trackedBranch.nameForRemoteOperations}",
       )
 
-    val token = GHCompatibilityUtil.getOrRequestToken(ghAccount, project)
+    val token = GHCompatibilityUtilHelper.getOrRequestToken(ghAccount, project)
     if (token == null) {
       thisLogger().warn("GH account, ${ghAccount.name}, is not logged in. Can't fetch current PR")
       return null
@@ -115,8 +115,7 @@ class GithubService(private val project: Project) : CiProvider {
   override suspend fun runEnvironment(): Map<String, String> =
     withContext(Dispatchers.IO) {
       val ghAccount = getMatchingGithubAccount() ?: return@withContext emptyMap()
-      val token =
-        GHCompatibilityUtil.getOrRequestToken(ghAccount, project) ?: return@withContext emptyMap()
+      val token = GHCompatibilityUtilHelper.getOrRequestToken(ghAccount, project) ?: return@withContext emptyMap()
 
       mapOf(
         "DANGER_GITHUB_API_TOKEN" to token,

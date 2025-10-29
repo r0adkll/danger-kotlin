@@ -8,11 +8,11 @@ import com.intellij.openapi.components.Service.Level.PROJECT
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.getCanonicalPath
 import com.intellij.openapi.util.io.toNioPathOrNull
 import com.r0adkll.danger.settings.settings
+import com.r0adkll.danger.util.PluginIdHelper
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -47,7 +47,7 @@ class DangerService(private val project: Project, private val scope: CoroutineSc
   suspend fun load() {
     // This should 1:1 match our danger-kotlin version for consistency
     val pluginVersion =
-      PluginManager.getInstance().findEnabledPlugin(PluginId.getId("com.r0adkll.danger"))?.version
+      PluginManager.getInstance().findEnabledPlugin(PluginIdHelper.getId("com.r0adkll.danger"))?.version
         ?: error("Unable to load this plugins version")
 
     logger.info("Loading Danger for $pluginVersion")
