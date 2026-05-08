@@ -1,7 +1,7 @@
 [versions]
 buildconfig = "5.7.1"
 changelog = "2.4.0"
-clikt = "5.0.3"
+clikt = "5.1.0"
 dokka = "2.1.0"
 github = "0.5.8"
 intelliJPlatform = "2.10.4"
